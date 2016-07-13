@@ -9,16 +9,32 @@
 import UIKit
 import KRStackView
 
-class ViewController: UIViewController {
+private var Screen: UIScreen {
+    return UIScreen.mainScreen()
+}
 
+class ViewController: UIViewController {
     @IBOutlet weak var stackView: KRStackView!
+    
+    @IBOutlet weak var viewControls: UIView!
+    @IBOutlet weak var controlDirection: UISegmentedControl!
+    @IBOutlet weak var switchShouldWrap: UISwitch!
+    
+    @IBOutlet weak var controlAlignment: UISegmentedControl!
+    @IBOutlet weak var sliderTop: UISlider!
+    @IBOutlet weak var sliderRight: UISlider!
+    @IBOutlet weak var sliderBottom: UISlider!
+    @IBOutlet weak var sliderLeft: UISlider!
+    
+    @IBOutlet weak var controlView: UISegmentedControl!
+    @IBOutlet weak var sliderWidth: UISlider!
+    @IBOutlet weak var sliderHeight: UISlider!
+    @IBOutlet weak var sliderOffset: UISlider!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        stackView.shouldWrap = true
-        stackView.direction = .Horizontal
-        stackView.insets = UIEdgeInsetsMake(8.0, 8.0, 8.0, 8.0)
+
+        viewControls.frame.origin.x = Screen.bounds.width
     }
 
     override func didReceiveMemoryWarning() {
@@ -26,8 +42,14 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func layoutAction(sender: AnyObject) {
-        view.setNeedsLayout()
+    @IBAction func backgroundAction(sender: AnyObject) {
+        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 300.0, initialSpringVelocity: 4.0, options: [], animations: { 
+            if self.viewControls.frame.origin.x == Screen.bounds.width {
+               self.viewControls.frame.origin.x = 401.0
+            } else {
+               self.viewControls.frame.origin.x = Screen.bounds.width
+            }
+            }, completion: nil)
     }
 }
 
