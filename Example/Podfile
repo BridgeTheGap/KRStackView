@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'KRStackView_Example' do
+  pod 'KRStackView', :path => '../'
+
+  target 'KRStackView_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
