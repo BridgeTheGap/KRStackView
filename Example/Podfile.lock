@@ -1,0 +1,16 @@
+PODS:
+  - KRStackView (0.1.0)
+
+DEPENDENCIES:
+  - KRStackView (from `../`)
+
+EXTERNAL SOURCES:
+  KRStackView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  KRStackView: 445dc628a31526a24b3fb8b6dfbb01650469fd01
+
+PODFILE CHECKSUM: f72d25182ce6b764f4995f982287f88140016adf
+
+COCOAPODS: 1.0.1

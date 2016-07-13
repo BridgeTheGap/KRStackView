@@ -1,0 +1,6 @@
+framework module Pods_KRStackView_Tests {
+  umbrella header "Pods-KRStackView_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
