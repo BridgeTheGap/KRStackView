@@ -28,25 +28,31 @@ extension CGRect {
 }
 
 public class KRStackView: UIView {
+    @IBInspectable public var enabled: Bool = true
+    
     public var direction: StackDirection = .Vertical
     
-    public var insets: UIEdgeInsets = UIEdgeInsetsZero
+    @IBInspectable public var insets: UIEdgeInsets = UIEdgeInsetsZero
     
-    public var spacing: CGFloat = 8.0
+    @IBInspectable public var spacing: CGFloat = 8.0
     public var itemSpacing: [CGFloat]?
     
     public var alignment: ItemAlignment = .Origin
     public var itemOffset: [CGFloat]?
     
-    public var shouldWrap: Bool = false
+    @IBInspectable public var shouldWrap: Bool = false
     
     public override func layoutSubviews() {
         super.layoutSubviews()
         
+        guard enabled else { return }
+        
         let isVertical = direction == .Vertical
         if translatesAutoresizingMaskIntoConstraints {  // Auto resizing
-            var endX: CGFloat = isVertical ? insets.left + subviews.reduce(0.0) { return $0.0 > $0.1.frame.width ? $0.0 : $0.1.frame.width } + insets.right : 0.0
-            var endY: CGFloat = isVertical ? 0.0 : insets.top + subviews.reduce(0.0) { return $0.0 > $0.1.frame.height ? $0.0 : $0.1.frame.height } + insets.bottom
+            let maxX = insets.left + subviews.reduce(0.0) { return $0.0 < $0.1.frame.width ? $0.1.frame.width : $0.0 } + insets.right
+            let maxY = insets.top + subviews.reduce(0.0) { return $0.0 < $0.1.frame.height ? $0.1.frame.height : $0.0 } + insets.bottom
+            var endX: CGFloat = isVertical ? shouldWrap ? maxX : max(frame.width, maxX) : 0.0
+            var endY: CGFloat = isVertical ? 0.0 : shouldWrap ? maxY : max(frame.height, maxY)
             
             let useItemSpacing = itemSpacing?.count == subviews.count - 1
             let useItemOffset = itemOffset?.count == subviews.count
@@ -69,9 +75,9 @@ public class KRStackView: UIView {
                     }
                 case .Center:
                     if isVertical {
-                        view.center.x = useItemOffset ? round(endY/2.0) + itemOffset![i] : round(endY/2.0)
+                        view.center.x = useItemOffset ? round(endX/2.0) + itemOffset![i] : round(endX/2.0)
                     } else {
-                        view.center.y = useItemOffset ? round(endX/2.0) + itemOffset![i] : round(endX/2.0)
+                        view.center.y = useItemOffset ? round(endY/2.0) + itemOffset![i] : round(endY/2.0)
                     }
                 case .EndPoint:
                     if isVertical {
@@ -84,12 +90,12 @@ public class KRStackView: UIView {
                 }
             }
             
-            if shouldWrap {
-                frame.size.width = isVertical ? endX : endX + insets.right
-                frame.size.height = isVertical ? endY + insets.bottom : endY
+            if isVertical {
+                frame.size.width = endX
+                frame.size.height = shouldWrap ? endY + insets.bottom : max(endY + insets.bottom, frame.height)
             } else {
-                frame.size.width = max(isVertical ? endX : endX + insets.right, frame.width)
-                frame.size.height = max(isVertical ? endY + insets.bottom : endY, frame.height)
+                frame.size.width = shouldWrap ? endX + insets.right : max(endX + insets.right, frame.width)
+                frame.size.height = endY
             }
         } else {    // Auto layout
             
