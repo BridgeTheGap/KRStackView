@@ -55,13 +55,12 @@ public class KRStackView: UIView {
             
             if isVertical {
                 var maxWidth = subviews[0].frame.width + (itemOffset?[0] ?? 0.0)
-                var maxIndex = 0
                 for (i, view) in subviews.enumerate() {
                     if maxWidth < view.frame.width + (itemOffset?[i] ?? 0.0) {
-                        (maxIndex, maxWidth) = (i, view.frame.width + (itemOffset?[i] ?? 0.0))
+                        maxWidth = view.frame.width + (itemOffset?[i] ?? 0.0)
                     }
                 }
-                var maxX = insets.left + maxWidth + insets.right
+                let maxX = insets.left + maxWidth + insets.right
                 
                 endX = shouldWrap ? maxX : max(maxX, frame.width)
                 endY = 0.0
@@ -69,13 +68,12 @@ public class KRStackView: UIView {
                 endX = 0.0
                 
                 var maxHeight = subviews[0].frame.height + (itemOffset?[0] ?? 0.0)
-                var maxIndex = 0
                 for (i, view) in subviews.enumerate() {
                     if maxHeight < view.frame.height + (itemOffset?[i] ?? 0.0) {
-                        (maxIndex, maxHeight) = (i, view.frame.height + (itemOffset?[i] ?? 0.0))
+                        maxHeight = view.frame.height + (itemOffset?[i] ?? 0.0)
                     }
                 }
-                var maxY = insets.top + maxHeight + insets.bottom
+                let maxY = insets.top + maxHeight + insets.bottom
                 
                 endY = shouldWrap ? maxY : max(maxY, frame.height)
             }
