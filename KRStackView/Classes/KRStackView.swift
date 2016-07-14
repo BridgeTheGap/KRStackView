@@ -54,8 +54,8 @@ public class KRStackView: UIView {
             var endX: CGFloat = isVertical ? shouldWrap ? maxX : max(frame.width, maxX) : 0.0
             var endY: CGFloat = isVertical ? 0.0 : shouldWrap ? maxY : max(frame.height, maxY)
             
-            let useItemSpacing = itemSpacing?.count == subviews.count - 1
-            let useItemOffset = itemOffset?.count == subviews.count
+            let useItemSpacing = itemSpacing?.count >= subviews.count - 1
+            let useItemOffset = itemOffset?.count >= subviews.count
             
             for (i, view) in subviews.enumerate() {
                 if isVertical {
