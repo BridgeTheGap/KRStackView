@@ -46,13 +46,32 @@ public class KRStackView: UIView {
         super.layoutSubviews()
         
         guard enabled else { return }
+        guard subviews.count > 0 else { return }
         
         let isVertical = direction == .Vertical
         if translatesAutoresizingMaskIntoConstraints {  // Auto resizing
-            let maxX = insets.left + subviews.reduce(0.0) { return $0.0 < $0.1.frame.width ? $0.1.frame.width : $0.0 } + insets.right
-            let maxY = insets.top + subviews.reduce(0.0) { return $0.0 < $0.1.frame.height ? $0.1.frame.height : $0.0 } + insets.bottom
-            var endX: CGFloat = isVertical ? shouldWrap ? maxX : max(frame.width, maxX) : 0.0
-            var endY: CGFloat = isVertical ? 0.0 : shouldWrap ? maxY : max(frame.height, maxY)
+            var endX: CGFloat!
+            var endY: CGFloat!
+            
+            if isVertical {
+                var maxWidth = subviews[0].frame.width
+                var maxIndex = 0
+                for (i, view) in subviews.enumerate() {
+                    if maxWidth < view.frame.width { (maxIndex, maxWidth) = (i, view.frame.width) }
+                }
+                endX = insets.left + (itemOffset?[maxIndex] ?? 0.0) + maxWidth + insets.right
+                endY = 0.0
+            } else {
+                endX = 0.0
+                
+                var maxHeight = subviews[0].frame.height
+                var maxIndex = 0
+                for (i, view) in subviews.enumerate() {
+                    if maxHeight < view.frame.height { (maxIndex, maxHeight) = (i, view.frame.height) }
+                }
+                
+                endY = insets.top + (itemOffset?[maxIndex] ?? 0.0) + maxHeight + insets.bottom
+            }
             
             let useItemSpacing = itemSpacing?.count >= subviews.count - 1
             let useItemOffset = itemOffset?.count >= subviews.count
@@ -75,9 +94,9 @@ public class KRStackView: UIView {
                     }
                 case .Center:
                     if isVertical {
-                        view.center.x = useItemOffset ? round(endX/2.0) + itemOffset![i] : round(endX/2.0)
+                        view.center.x = useItemOffset ? round(endX/2.0) + itemOffset![i]/2.0 : round(endX/2.0)
                     } else {
-                        view.center.y = useItemOffset ? round(endY/2.0) + itemOffset![i] : round(endY/2.0)
+                        view.center.y = useItemOffset ? round(endY/2.0) + itemOffset![i]/2.0 : round(endY/2.0)
                     }
                 case .EndPoint:
                     if isVertical {

@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KRStackView'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'KRStackView helps arrange subviews, using only a few parameters.'
 
 # This description is used to generate tags and improve search results.
