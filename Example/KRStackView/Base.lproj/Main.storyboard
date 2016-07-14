@@ -176,7 +176,7 @@
                                         </connections>
                                     </slider>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="ixg-4n-OHU">
-                                        <rect key="frame" x="17" y="436" width="332" height="29"/>
+                                        <rect key="frame" x="17" y="497" width="332" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Red"/>
@@ -184,43 +184,84 @@
                                             <segment title="Blue"/>
                                         </segments>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="viewSelectAction:" destination="vXZ-lx-hvc" eventType="valueChanged" id="dvb-5d-p22"/>
+                                        </connections>
                                     </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Width" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2Mz-aO-bsc">
-                                        <rect key="frame" x="17" y="486" width="46" height="21"/>
+                                        <rect key="frame" x="17" y="547" width="46" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" id="SLU-IE-KDA">
-                                        <rect key="frame" x="82" y="481" width="269" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="64" minValue="20" maxValue="128" id="SLU-IE-KDA">
+                                        <rect key="frame" x="92" y="542" width="259" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.22352941176470587" green="0.83529411764705885" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="widthAction:" destination="vXZ-lx-hvc" eventType="valueChanged" id="XHn-6y-UPX"/>
+                                        </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="06T-ed-HEX">
-                                        <rect key="frame" x="17" y="527" width="51" height="21"/>
+                                        <rect key="frame" x="17" y="588" width="51" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" id="qaw-ok-4Sf">
-                                        <rect key="frame" x="82" y="522" width="269" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="64" minValue="20" maxValue="128" id="qaw-ok-4Sf">
+                                        <rect key="frame" x="92" y="583" width="259" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.22352941176470587" green="0.83529411764705885" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="heightAction:" destination="vXZ-lx-hvc" eventType="valueChanged" id="Pan-iF-W7L"/>
+                                        </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offset" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jFO-z1-4hw">
-                                        <rect key="frame" x="17" y="568" width="48" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spacing" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jFO-z1-4hw">
+                                        <rect key="frame" x="17" y="626" width="62" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="128" minValue="0.0" maxValue="256" id="9Mv-4W-bIz">
-                                        <rect key="frame" x="82" y="563" width="269" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="8" minValue="0.0" maxValue="22" id="9Mv-4W-bIz">
+                                        <rect key="frame" x="92" y="621" width="259" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" red="0.22352941176470587" green="0.83529411764705885" blue="0.47450980392156861" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="spacingAction:" destination="vXZ-lx-hvc" eventType="valueChanged" id="xSK-ci-0Cs"/>
+                                        </connections>
                                     </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offset" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="L3K-1a-eDk">
+                                        <rect key="frame" x="17" y="666" width="48" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="8" minValue="0.0" maxValue="22" id="Aue-RB-Fru">
+                                        <rect key="frame" x="92" y="662" width="259" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" red="0.22352941179999999" green="0.83529411760000005" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="offsetAction:" destination="vXZ-lx-hvc" eventType="valueChanged" id="JVP-sI-FFf"/>
+                                        </connections>
+                                    </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Individual Setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HPh-Rk-hxI">
+                                        <rect key="frame" x="17" y="452" width="132" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="TzR-Jl-3hY">
+                                        <rect key="frame" x="300" y="447" width="51" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <connections>
+                                            <action selector="individualAction:" destination="vXZ-lx-hvc" eventType="valueChanged" id="wgV-uv-VaI"/>
+                                        </connections>
+                                    </switch>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
                             </view>
@@ -244,14 +285,19 @@
                         <outlet property="sliderBottom" destination="w06-Hg-8bC" id="Bl5-ki-erl"/>
                         <outlet property="sliderHeight" destination="qaw-ok-4Sf" id="OzV-wJ-LC8"/>
                         <outlet property="sliderLeft" destination="Htr-pa-USA" id="hZF-65-UIm"/>
-                        <outlet property="sliderOffset" destination="9Mv-4W-bIz" id="msz-rk-ad7"/>
+                        <outlet property="sliderOffset" destination="Aue-RB-Fru" id="D8q-Dv-kYJ"/>
                         <outlet property="sliderRight" destination="2Bc-UX-uKh" id="fbE-mY-dgJ"/>
+                        <outlet property="sliderSpacing" destination="9Mv-4W-bIz" id="q3C-nu-0ai"/>
                         <outlet property="sliderTop" destination="8dy-g5-iIm" id="6H0-Oe-Frd"/>
                         <outlet property="sliderWidth" destination="SLU-IE-KDA" id="hft-rb-4ws"/>
                         <outlet property="stackView" destination="L4w-0R-PTe" id="vKO-w5-dsy"/>
                         <outlet property="switchEnabled" destination="3He-Xg-hSJ" id="eO7-ql-tVg"/>
+                        <outlet property="switchIndividual" destination="TzR-Jl-3hY" id="XmB-Ci-baa"/>
                         <outlet property="switchShouldWrap" destination="rPR-nk-yan" id="0xu-vb-3Qj"/>
+                        <outlet property="viewBlue" destination="8rt-wM-WmQ" id="6g4-wt-Xze"/>
                         <outlet property="viewControls" destination="lra-IR-m6r" id="Re4-w6-zK0"/>
+                        <outlet property="viewRed" destination="J55-If-ITU" id="bEo-eO-FhA"/>
+                        <outlet property="viewYellow" destination="LyP-VZ-nJ5" id="ecB-wP-vP3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
