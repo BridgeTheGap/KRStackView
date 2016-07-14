@@ -54,23 +54,30 @@ public class KRStackView: UIView {
             var endY: CGFloat!
             
             if isVertical {
-                var maxWidth = subviews[0].frame.width
+                var maxWidth = subviews[0].frame.width + (itemOffset?[0] ?? 0.0)
                 var maxIndex = 0
                 for (i, view) in subviews.enumerate() {
-                    if maxWidth < view.frame.width { (maxIndex, maxWidth) = (i, view.frame.width) }
+                    if maxWidth < view.frame.width + (itemOffset?[i] ?? 0.0) {
+                        (maxIndex, maxWidth) = (i, view.frame.width + (itemOffset?[i] ?? 0.0))
+                    }
                 }
-                endX = insets.left + (itemOffset?[maxIndex] ?? 0.0) + maxWidth + insets.right
+                var maxX = insets.left + maxWidth + insets.right
+                
+                endX = shouldWrap ? maxX : max(maxX, frame.width)
                 endY = 0.0
             } else {
                 endX = 0.0
                 
-                var maxHeight = subviews[0].frame.height
+                var maxHeight = subviews[0].frame.height + (itemOffset?[0] ?? 0.0)
                 var maxIndex = 0
                 for (i, view) in subviews.enumerate() {
-                    if maxHeight < view.frame.height { (maxIndex, maxHeight) = (i, view.frame.height) }
+                    if maxHeight < view.frame.height + (itemOffset?[i] ?? 0.0) {
+                        (maxIndex, maxHeight) = (i, view.frame.height + (itemOffset?[i] ?? 0.0))
+                    }
                 }
+                var maxY = insets.top + maxHeight + insets.bottom
                 
-                endY = insets.top + (itemOffset?[maxIndex] ?? 0.0) + maxHeight + insets.bottom
+                endY = shouldWrap ? maxY : max(maxY, frame.height)
             }
             
             let useItemSpacing = itemSpacing?.count >= subviews.count - 1
