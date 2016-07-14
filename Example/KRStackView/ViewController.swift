@@ -13,10 +13,13 @@ private var Screen: UIScreen {
     return UIScreen.mainScreen()
 }
 
+private var DEFAULT_FRAME = CGRectMake(20.0, 20.0, 148.0, 400.0)
+
 class ViewController: UIViewController {
     @IBOutlet weak var stackView: KRStackView!
     
     @IBOutlet weak var viewControls: UIView!
+    @IBOutlet weak var switchEnabled: UISwitch!
     @IBOutlet weak var controlDirection: UISegmentedControl!
     @IBOutlet weak var switchShouldWrap: UISwitch!
     
@@ -34,6 +37,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        stackView.enabled = false
         viewControls.frame.origin.x = Screen.bounds.width
     }
 
@@ -50,6 +54,79 @@ class ViewController: UIViewController {
                self.viewControls.frame.origin.x = Screen.bounds.width
             }
             }, completion: nil)
+    }
+    
+    // MARK: - Controls
+    @IBAction func enabledAction(sender: AnyObject) {
+        let enabled = (sender as! UISwitch).on
+        stackView.frame = DEFAULT_FRAME
+        
+        stackView.enabled = enabled
+        
+        for view in viewControls.subviews {
+            if view === switchEnabled { continue }
+            if let control = view as? UIControl { control.enabled = enabled }
+        }
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func directionAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+        
+        if stackView.direction == .Vertical { stackView.direction = .Horizontal }
+        else { stackView.direction = .Vertical }
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func wrapAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+
+        stackView.shouldWrap = (sender as! UISwitch).on
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func alignmentAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+
+        guard let control = sender as? UISegmentedControl else { return }
+        switch control.selectedSegmentIndex {
+        case 0: stackView.alignment = .Origin
+        case 1: stackView.alignment = .Center
+        default: stackView.alignment = .EndPoint
+        }
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func topInsetAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+        stackView.insets.top = CGFloat((sender as! UISlider).value)
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func rightInsetAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+        stackView.insets.right = CGFloat((sender as! UISlider).value)
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func bottomInsetAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+        stackView.insets.bottom = CGFloat((sender as! UISlider).value)
+        
+        stackView.setNeedsLayout()
+    }
+    
+    @IBAction func leftInsetAction(sender: AnyObject) {
+        stackView.frame = DEFAULT_FRAME
+        stackView.insets.left = CGFloat((sender as! UISlider).value)
+        
+        stackView.setNeedsLayout()
     }
 }
 
