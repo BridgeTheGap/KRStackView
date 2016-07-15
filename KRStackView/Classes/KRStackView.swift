@@ -146,13 +146,21 @@ public class KRStackView: UIView {
             if index == 0 { insets.top = origin.y }
             else { itemSpacing!.append(origin.y - subviews[index-1].frame.endPoint.y) }
             
-            itemOffset!.append(origin.x)
+            switch alignment {
+            case .Origin: itemOffset!.append(origin.x)
+            case .Center: itemOffset!.append(subview.center.x - center.x)
+            case .EndPoint: itemOffset!.append(frame.endPoint.x - subview.frame.endPoint.x)
+            }
         } else {
             let origin = subview.frame.origin
             if index == 0 { insets.left = origin.x }
             else { itemSpacing!.append(origin.x - subviews[index-1].frame.endPoint.x) }
             
-            itemOffset!.append(origin.y)
+            switch alignment {
+            case .Origin: itemOffset!.append(origin.y)
+            case .Center: itemOffset!.append(subview.center.y - center.y)
+            case .EndPoint: itemOffset!.append(frame.endPoint.y - subview.frame.endPoint.y)
+            }
         }
     }
 }
