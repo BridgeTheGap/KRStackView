@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L4w-0R-PTe" customClass="KRStackView" customModule="KRStackView">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L4w-0R-PTe" customClass="KRStackView" customModule="KRStackView">
                                 <rect key="frame" x="20" y="20" width="148" height="400"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="J55-If-ITU">
@@ -34,6 +35,13 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="400" id="1a6-4D-XJb"/>
+                                    <constraint firstAttribute="width" constant="148" id="5eo-zC-ZUy"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="translatesCurrentState" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lra-IR-m6r">
                                 <rect key="frame" x="401" y="0.0" width="367" height="1024"/>
@@ -244,6 +252,10 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="L4w-0R-PTe" firstAttribute="top" secondItem="tXM-oX-klY" secondAttribute="bottom" id="PzU-ZX-tCv"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="L4w-0R-PTe" secondAttribute="leading" id="l3H-59-11v"/>
+                        </constraints>
                         <connections>
                             <action selector="backgroundAction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="kEB-gj-Xnx"/>
                         </connections>

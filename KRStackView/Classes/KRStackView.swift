@@ -41,6 +41,7 @@ public class KRStackView: UIView {
     public var itemOffset: [CGFloat]?
     
     @IBInspectable public var shouldWrap: Bool = false
+    @IBInspectable public var translatesCurrentState: Bool = false
     
     public override func layoutSubviews() {
         guard enabled else { return }
@@ -48,9 +49,21 @@ public class KRStackView: UIView {
         
         let isVertical = direction == .Vertical
 
-        NSLayoutConstraint.deactivateConstraints(constraints + superview!.constraints.filter{ $0.firstItem === self || $0.secondItem === self })
-        translatesAutoresizingMaskIntoConstraints = true
-        for v in subviews { v.translatesAutoresizingMaskIntoConstraints = true }
+        if !translatesAutoresizingMaskIntoConstraints {
+            NSLayoutConstraint.deactivateConstraints(constraints + superview!.constraints.filter{ $0.firstItem === self || $0.secondItem === self })
+            translatesAutoresizingMaskIntoConstraints = true
+            
+            if translatesCurrentState {
+                for (i, view) in subviews.enumerate() {
+                    view.translatesAutoresizingMaskIntoConstraints = true
+                    translateCurrentStateForSubview(view, index: i)
+                }
+            } else {
+                for v in subviews { v.translatesAutoresizingMaskIntoConstraints = true }
+            }
+        } else if translatesCurrentState {
+            for (i, view) in subviews.enumerate() { translateCurrentStateForSubview(view, index: i) }
+        }
         
         var endX: CGFloat!
         var endY: CGFloat!
@@ -122,6 +135,25 @@ public class KRStackView: UIView {
         } else {
             frame.size.width = shouldWrap ? endX + insets.right : max(endX + insets.right, frame.width)
             frame.size.height = endY
+        }
+    }
+    
+    private func translateCurrentStateForSubview(subview: UIView, index: Int) {
+        if itemSpacing == nil { itemSpacing = [CGFloat]() }
+        if itemOffset == nil { itemOffset = [CGFloat]() }
+        
+        if direction == .Vertical {
+            let origin = subview.frame.origin
+            if index == 0 { insets.top = origin.y }
+            else { itemSpacing!.append(subviews[index-1].frame.endPoint.y - origin.y) }
+            
+            itemOffset!.append(origin.x)
+        } else {
+            let origin = subview.frame.origin
+            if index == 0 { insets.left = origin.x }
+            else { itemSpacing!.append(subviews[index-1].frame.endPoint.x - origin.x) }
+            
+            itemOffset!.append(origin.y)
         }
     }
 }
