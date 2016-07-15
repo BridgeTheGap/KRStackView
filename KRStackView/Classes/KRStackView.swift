@@ -47,6 +47,15 @@ public class KRStackView: UIView {
         }
     }
     
+    public init(frame: CGRect, subviews: [UIView]) {
+        super.init(frame: frame)
+        for view in subviews { addSubview(view) }
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     public override func layoutSubviews() {
         guard enabled else { super.layoutSubviews(); return }
         guard subviews.count > 0 else { return }
