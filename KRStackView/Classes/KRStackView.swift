@@ -47,6 +47,8 @@ public class KRStackView: UIView {
         guard enabled else { return }
         guard subviews.count > 0 else { return }
         
+        if translatesCurrentState { (itemSpacing, itemOffset) = ([CGFloat](), [CGFloat]()) }
+        
         let isVertical = direction == .Vertical
 
         if !translatesAutoresizingMaskIntoConstraints {
@@ -139,19 +141,16 @@ public class KRStackView: UIView {
     }
     
     private func translateCurrentStateForSubview(subview: UIView, index: Int) {
-        if itemSpacing == nil { itemSpacing = [CGFloat]() }
-        if itemOffset == nil { itemOffset = [CGFloat]() }
-        
         if direction == .Vertical {
             let origin = subview.frame.origin
             if index == 0 { insets.top = origin.y }
-            else { itemSpacing!.append(subviews[index-1].frame.endPoint.y - origin.y) }
+            else { itemSpacing!.append(origin.y - subviews[index-1].frame.endPoint.y) }
             
             itemOffset!.append(origin.x)
         } else {
             let origin = subview.frame.origin
             if index == 0 { insets.left = origin.x }
-            else { itemSpacing!.append(subviews[index-1].frame.endPoint.x - origin.x) }
+            else { itemSpacing!.append(origin.x - subviews[index-1].frame.endPoint.x) }
             
             itemOffset!.append(origin.y)
         }

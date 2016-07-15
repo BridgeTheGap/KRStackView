@@ -39,9 +39,6 @@
                                     <constraint firstAttribute="height" constant="400" id="1a6-4D-XJb"/>
                                     <constraint firstAttribute="width" constant="148" id="5eo-zC-ZUy"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="translatesCurrentState" value="YES"/>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lra-IR-m6r">
                                 <rect key="frame" x="401" y="0.0" width="367" height="1024"/>
