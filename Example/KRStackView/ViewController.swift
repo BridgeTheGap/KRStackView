@@ -64,7 +64,6 @@ class ViewController: UIViewController {
     // MARK: - Controls
     @IBAction func enabledAction(sender: AnyObject) {
         let enabled = (sender as! UISwitch).on
-        stackView.frame = DEFAULT_FRAME
         
         stackView.enabled = enabled
         
