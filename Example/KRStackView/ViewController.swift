@@ -45,7 +45,7 @@ class ViewController: UIViewController {
         stackView.enabled = false
         viewControls.frame.origin.x = Screen.bounds.width
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -78,6 +78,13 @@ class ViewController: UIViewController {
         }
         
         stackView.setNeedsLayout()
+        
+        if stackView.translatesCurrentState {
+            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1))
+            dispatch_after(time, dispatch_get_main_queue()) {
+                self.stackView.translatesCurrentState = false
+            }
+        }
     }
     
     @IBAction func directionAction(sender: AnyObject) {

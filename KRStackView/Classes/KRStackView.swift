@@ -41,13 +41,17 @@ public class KRStackView: UIView {
     public var itemOffset: [CGFloat]?
     
     @IBInspectable public var shouldWrap: Bool = false
-    @IBInspectable public var translatesCurrentState: Bool = false
+    @IBInspectable public var translatesCurrentLayout: Bool = false {
+        didSet {
+            if translatesCurrentLayout { alignment = .Origin }
+        }
+    }
     
     public override func layoutSubviews() {
-        guard enabled else { return }
+        guard enabled else { super.layoutSubviews(); return }
         guard subviews.count > 0 else { return }
         
-        if translatesCurrentState { (itemSpacing, itemOffset) = ([CGFloat](), [CGFloat]()) }
+        if translatesCurrentLayout { (itemSpacing, itemOffset) = ([CGFloat](), [CGFloat]()) }
         
         let isVertical = direction == .Vertical
 
@@ -55,16 +59,13 @@ public class KRStackView: UIView {
             NSLayoutConstraint.deactivateConstraints(constraints + superview!.constraints.filter{ $0.firstItem === self || $0.secondItem === self })
             translatesAutoresizingMaskIntoConstraints = true
             
-            if translatesCurrentState {
-                for (i, view) in subviews.enumerate() {
-                    view.translatesAutoresizingMaskIntoConstraints = true
-                    translateCurrentStateForSubview(view, index: i)
-                }
+            if translatesCurrentLayout {
+                translateCurrentStateForSubviews()
             } else {
                 for v in subviews { v.translatesAutoresizingMaskIntoConstraints = true }
             }
-        } else if translatesCurrentState {
-            for (i, view) in subviews.enumerate() { translateCurrentStateForSubview(view, index: i) }
+        } else if translatesCurrentLayout {
+            translateCurrentStateForSubviews()
         }
         
         var endX: CGFloat!
@@ -140,26 +141,22 @@ public class KRStackView: UIView {
         }
     }
     
-    private func translateCurrentStateForSubview(subview: UIView, index: Int) {
-        if direction == .Vertical {
-            let origin = subview.frame.origin
-            if index == 0 { insets.top = origin.y }
-            else { itemSpacing!.append(origin.y - subviews[index-1].frame.endPoint.y) }
+    private func translateCurrentStateForSubviews() {
+        for (i, view) in subviews.enumerate() {
+            view.translatesAutoresizingMaskIntoConstraints = true
             
-            switch alignment {
-            case .Origin: itemOffset!.append(origin.x)
-            case .Center: itemOffset!.append(subview.center.x - center.x)
-            case .EndPoint: itemOffset!.append(frame.endPoint.x - subview.frame.endPoint.x)
-            }
-        } else {
-            let origin = subview.frame.origin
-            if index == 0 { insets.left = origin.x }
-            else { itemSpacing!.append(origin.x - subviews[index-1].frame.endPoint.x) }
-            
-            switch alignment {
-            case .Origin: itemOffset!.append(origin.y)
-            case .Center: itemOffset!.append(subview.center.y - center.y)
-            case .EndPoint: itemOffset!.append(frame.endPoint.y - subview.frame.endPoint.y)
+            if direction == .Vertical {
+                let origin = view.frame.origin
+                if i == 0 { insets.top = origin.y }
+                else { itemSpacing!.append(origin.y - subviews[i-1].frame.endPoint.y) }
+                
+                itemOffset!.append(origin.x)
+            } else {
+                let origin = view.frame.origin
+                if i == 0 { insets.left = origin.x }
+                else { itemSpacing!.append(origin.x - subviews[i-1].frame.endPoint.x) }
+                
+                itemOffset!.append(origin.y)
             }
         }
     }
