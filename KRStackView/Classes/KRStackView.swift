@@ -139,6 +139,8 @@ public class KRStackView: UIView {
             frame.size.width = shouldWrap ? endX + insets.right : max(endX + insets.right, frame.width)
             frame.size.height = endY
         }
+        
+        defer { translatesCurrentLayout = false }
     }
     
     private func translateCurrentStateForSubviews() {
