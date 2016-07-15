@@ -78,13 +78,6 @@ class ViewController: UIViewController {
         }
         
         stackView.setNeedsLayout()
-        
-        if stackView.translatesCurrentLayout {
-            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(Double(NSEC_PER_SEC) * 0.1))
-            dispatch_after(time, dispatch_get_main_queue()) {
-                self.stackView.translatesCurrentLayout = false
-            }
-        }
     }
     
     @IBAction func directionAction(sender: AnyObject) {
