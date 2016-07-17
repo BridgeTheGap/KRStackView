@@ -55,51 +55,60 @@ Add subviews into `KRStackView` like you would for `UIView` objects.
 
 ## Properties
 
-####### @IBInspectable public var enabled: Bool = true
+> @IBInspectable public var enabled: Bool = true
+
 Set this property to `false` if you want a normal `UIView`-like subview layout. Dynamically changing this property to `true` will result in a dynamic layout change.
 
 The default value is `false`.
 
-###### public var direction: StackDirection = .Vertical
+> public var direction: StackDirection = .Vertical
+
 `KRStackView` arranges subviews according to the `direction` property, ignoring their initial `origin`. Dynamic changes will be reflected.
 
 The default value is `.Vertical`. Possible values are `.Vertical` and `.Horizontal`.
 
-###### @IBInspectable public var translatesCurrentLayout: Bool = false
+> @IBInspectable public var translatesCurrentLayout: Bool = false
+
 Set this property to `true` if you want the initial origins of subviews to be translated to their respective `KRStackView` properties.
 
 This property can be used when you want the functionality of `KRStackView`s with existing `UIView`s or want the initial layout to be preserved but the view's layout can be changed dynamically.
 
 The default is `false`. Also, this property is automatically set to `false` after `layoutSubviews()` is called.
 
-###### public var insets: UIEdgeInsets = UIEdgeInsetsZero
+> public var insets: UIEdgeInsets = UIEdgeInsetsZero
+
 Insets will be based on the outer most bounds of subviews. This property is ignored if `translatesCurrentLayout` is set to `true`.
 
 The default value is `UIEdgeInsetsZero`.
 
-###### @IBInspectable public var spacing: CGFloat = 8.0
+> @IBInspectable public var spacing: CGFloat = 8.0
+
 This property defines the spacing between subviews. Use this property if all the subviews in the `KRStackView` instance should be spaced out evently.
 
 The default value is `8.0`. This property is overridden if the `itemSpacing` is a non-nil value.
 
-###### public var itemSpacing: [CGFloat]?
+> public var itemSpacing: [CGFloat]?
+
 This property defines the individual spacing between subviews. Each value is the spacing after the corresponding view in the `subviews` array, i.e. `itemSpacing![n]` is the spacing after `subviews[n]` of the `KRStackView` instance.
 
 The number of values in the array should be `n-1` where `n` is the number of subviews in the `KRStackView` instance. Any values coming after the n-1th value will be ignored. If the number of values in the array is less than `n-1`, a fatal error is thrown.
 
 If this property is set, the `spacing` property is ignored.
     
-###### public var alignment: ItemAlignment = .Origin
+> public var alignment: ItemAlignment = .Origin
+
 The `alignment` property defines the alignment of the subviews. If `direction` is set to `.Vertical`, this property defines how the subviews will be aligned horizontally, and vice versa.
 
 The default value is `.Origin`. Possible values are `.Origin`, `.Center`, and `.EndPoint`. 
 
-###### public var itemOffset: [CGFloat]?
+> public var itemOffset: [CGFloat]?
+
 The `itemOffset` property defines the offset of each subview, based on the `alignment` property. If `direction = .Vertical` and `alignment = .Origin`, each value will offset the subview from the origin of the `KRStackView` on the x-axis, i.e. it would be as if the subview's `origin.x = offset`. 
 
 Each item value is the offset of the corresponding view in the `subviews` array, i.e. `itemOffset![v]` is the offset for `subviews[n]`.
     
-###### @IBInspectable public var shouldWrap: Bool = false
+> @IBInspectable public var shouldWrap: Bool = false
+
 The `shouldWrap` property will shrink the `bounds` to fit snugly, if there are any leftover space. If the subviews go beyond the `bounds` both vertically and horizontally, this property will seem to have no effect.
 
 The default value is `false`.
