@@ -32,7 +32,13 @@ public class KRStackView: UIView {
     
     public var direction: StackDirection = .Vertical
     
-    @IBInspectable public var insets: UIEdgeInsets = UIEdgeInsetsZero
+    @IBInspectable public var translatesCurrentLayout: Bool = false {
+        didSet {
+            if translatesCurrentLayout { alignment = .Origin }
+        }
+    }
+
+    public var insets: UIEdgeInsets = UIEdgeInsetsZero
     
     @IBInspectable public var spacing: CGFloat = 8.0
     public var itemSpacing: [CGFloat]?
@@ -41,15 +47,14 @@ public class KRStackView: UIView {
     public var itemOffset: [CGFloat]?
     
     @IBInspectable public var shouldWrap: Bool = false
-    @IBInspectable public var translatesCurrentLayout: Bool = false {
-        didSet {
-            if translatesCurrentLayout { alignment = .Origin }
-        }
-    }
     
     public init(frame: CGRect, subviews: [UIView]) {
         super.init(frame: frame)
         for view in subviews { addSubview(view) }
+    }
+    
+    public convenience init(subviews: [UIView]) {
+        self.init(frame: CGRectZero, subviews: subviews)
     }
     
     required public init?(coder aDecoder: NSCoder) {
