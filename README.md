@@ -8,11 +8,11 @@
 ## Intro
 **KRStackView** arranges subviews like `UIStackView`, but supports earlier iOS versions and both auto-resizing and auto layout.
 
-Subviews of a `KRStackView` instance will be arraged according to its `direction property, so it's no longer necessary to do complicated calculation to set subviews' `origin`.
+Subviews of a **KRStackView** instance will be arraged according to its `direction` property, so it's no longer necessary to do complicated calculation to set subviews' `origin`.
 
 Also, as long as the subviews' `size` property are set properly, a **KRStackView** instance will automatically fit its' size to embrace all its subviews.
 
-Laying out views can be as easy as defining origin of the `KRStackView` instance and setting the sizes of subviews. Other arrangments will be taken care of.
+Laying out views can be as easy as defining origin of the **KRStackView** instance and setting the sizes of subviews. Other arrangments will be taken care of.
 
 ## Example
 
