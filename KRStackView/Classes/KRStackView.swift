@@ -53,6 +53,10 @@ public class KRStackView: UIView {
         for view in subviews { addSubview(view) }
     }
     
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
     public convenience init(subviews: [UIView]) {
         self.init(frame: CGRectZero, subviews: subviews)
     }
