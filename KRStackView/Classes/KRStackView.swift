@@ -9,44 +9,44 @@
 import UIKit
 
 public enum StackDirection {
-    case Vertical
-    case Horizontal
+    case vertical
+    case horizontal
 }
 
 public enum ItemAlignment {
-    case Origin
-    case Center
-    case EndPoint
+    case origin
+    case center
+    case endPoint
 }
 
 extension CGRect {
     var endPoint: CGPoint {
         get {
-            return CGPointMake(origin.x + width, origin.y + height)
+            return CGPoint(x: origin.x + width, y: origin.y + height)
         }
     }
 }
 
-public class KRStackView: UIView {
-    @IBInspectable public var enabled: Bool = true
+open class KRStackView: UIView {
+    @IBInspectable open var enabled: Bool = true
     
-    public var direction: StackDirection = .Vertical
+    open var direction: StackDirection = .vertical
     
-    @IBInspectable public var translatesCurrentLayout: Bool = false {
+    @IBInspectable open var translatesCurrentLayout: Bool = false {
         didSet {
-            if translatesCurrentLayout { alignment = .Origin }
+            if translatesCurrentLayout { alignment = .origin }
         }
     }
 
-    public var insets: UIEdgeInsets = UIEdgeInsetsZero
+    open var insets: UIEdgeInsets = UIEdgeInsets.zero
     
-    @IBInspectable public var spacing: CGFloat = 8.0
-    public var itemSpacing: [CGFloat]?
+    @IBInspectable open var spacing: CGFloat = 8.0
+    open var itemSpacing: [CGFloat]?
     
-    public var alignment: ItemAlignment = .Origin
-    public var itemOffset: [CGFloat]?
+    open var alignment: ItemAlignment = .origin
+    open var itemOffset: [CGFloat]?
     
-    @IBInspectable public var shouldWrap: Bool = false
+    @IBInspectable open var shouldWrap: Bool = false
     
     public init(frame: CGRect, subviews: [UIView]) {
         super.init(frame: frame)
@@ -58,23 +58,23 @@ public class KRStackView: UIView {
     }
     
     public convenience init(subviews: [UIView]) {
-        self.init(frame: CGRectZero, subviews: subviews)
+        self.init(frame: CGRect.zero, subviews: subviews)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         guard enabled else { super.layoutSubviews(); return }
         guard subviews.count > 0 else { return }
         
         if translatesCurrentLayout { (itemSpacing, itemOffset) = ([CGFloat](), [CGFloat]()) }
         
-        let isVertical = direction == .Vertical
+        let isVertical = direction == .vertical
 
         if !translatesAutoresizingMaskIntoConstraints {
-            NSLayoutConstraint.deactivateConstraints(constraints + superview!.constraints.filter{ $0.firstItem === self || $0.secondItem === self })
+            NSLayoutConstraint.deactivate(constraints + superview!.constraints.filter{ $0.firstItem === self || $0.secondItem === self })
             translatesAutoresizingMaskIntoConstraints = true
             
             if translatesCurrentLayout {
@@ -91,7 +91,7 @@ public class KRStackView: UIView {
         
         if isVertical {
             var maxWidth = subviews[0].frame.width + (itemOffset?[0] ?? 0.0)
-            for (i, view) in subviews.enumerate() {
+            for (i, view) in subviews.enumerated() {
                 if maxWidth < view.frame.width + (itemOffset?[i] ?? 0.0) {
                     maxWidth = view.frame.width + (itemOffset?[i] ?? 0.0)
                 }
@@ -104,7 +104,7 @@ public class KRStackView: UIView {
             endX = 0.0
             
             var maxHeight = subviews[0].frame.height + (itemOffset?[0] ?? 0.0)
-            for (i, view) in subviews.enumerate() {
+            for (i, view) in subviews.enumerated() {
                 if maxHeight < view.frame.height + (itemOffset?[i] ?? 0.0) {
                     maxHeight = view.frame.height + (itemOffset?[i] ?? 0.0)
                 }
@@ -114,10 +114,10 @@ public class KRStackView: UIView {
             endY = shouldWrap ? maxY : max(maxY, frame.height)
         }
         
-        let useItemSpacing = itemSpacing?.count >= subviews.count - 1
-        let useItemOffset = itemOffset?.count >= subviews.count
+        let useItemSpacing = itemSpacing != nil && itemSpacing!.count >= subviews.count - 1
+        let useItemOffset = itemSpacing != nil && itemOffset!.count >= subviews.count
         
-        for (i, view) in subviews.enumerate() {
+        for (i, view) in subviews.enumerated() {
             if isVertical {
                 view.frame.origin.y = i == 0 ? insets.top : useItemSpacing ? endY + itemSpacing![i-1] : endY + spacing
                 endY = view.frame.endPoint.y
@@ -127,19 +127,19 @@ public class KRStackView: UIView {
             }
             
             switch alignment {
-            case .Origin:
+            case .origin:
                 if isVertical {
                     view.frame.origin.x = useItemOffset ? insets.left + itemOffset![i] : insets.left
                 } else {
                     view.frame.origin.y = useItemOffset ? insets.top + itemOffset![i] : insets.top
                 }
-            case .Center:
+            case .center:
                 if isVertical {
                     view.center.x = useItemOffset ? round(endX/2.0) + itemOffset![i]/2.0 : round(endX/2.0)
                 } else {
                     view.center.y = useItemOffset ? round(endY/2.0) + itemOffset![i]/2.0 : round(endY/2.0)
                 }
-            case .EndPoint:
+            case .endPoint:
                 if isVertical {
                     view.frame.origin.x = endX - (insets.right+view.frame.width)
                     if useItemOffset { view.frame.origin.x -= itemOffset![i] }
@@ -161,11 +161,11 @@ public class KRStackView: UIView {
         defer { translatesCurrentLayout = false }
     }
     
-    private func translateCurrentStateForSubviews() {
-        for (i, view) in subviews.enumerate() {
+    fileprivate func translateCurrentStateForSubviews() {
+        for (i, view) in subviews.enumerated() {
             view.translatesAutoresizingMaskIntoConstraints = true
             
-            if direction == .Vertical {
+            if direction == .vertical {
                 let origin = view.frame.origin
                 if i == 0 { insets.top = origin.y }
                 else { itemSpacing!.append(origin.y - subviews[i-1].frame.endPoint.y) }

@@ -10,10 +10,10 @@ import UIKit
 import KRStackView
 
 private var Screen: UIScreen {
-    return UIScreen.mainScreen()
+    return UIScreen.main
 }
 
-private var DEFAULT_FRAME = CGRectMake(20.0, 20.0, 148.0, 400.0)
+private var DEFAULT_FRAME = CGRect(x: 20.0, y: 20.0, width: 148.0, height: 400.0)
 
 class ViewController: UIViewController {
     @IBOutlet weak var stackView: KRStackView!
@@ -51,8 +51,8 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func backgroundAction(sender: AnyObject) {
-        UIView.animateWithDuration(0.5, delay: 0.0, usingSpringWithDamping: 300.0, initialSpringVelocity: 4.0, options: [], animations: { 
+    @IBAction func backgroundAction(_ sender: AnyObject) {
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 300.0, initialSpringVelocity: 4.0, options: [], animations: { 
             if self.viewControls.frame.origin.x == Screen.bounds.width {
                self.viewControls.frame.origin.x = 401.0
             } else {
@@ -62,127 +62,127 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Controls
-    @IBAction func enabledAction(sender: AnyObject) {
-        let enabled = (sender as! UISwitch).on
+    @IBAction func enabledAction(_ sender: AnyObject) {
+        let enabled = (sender as! UISwitch).isOn
         
         stackView.enabled = enabled
         
         if !enabled {
-            switchIndividual.on = false
-            switchIndividual.sendActionsForControlEvents(.ValueChanged)
+            switchIndividual.isOn = false
+            switchIndividual.sendActions(for: .valueChanged)
         }
         
         for view in viewControls.subviews {
             if [switchEnabled, controlView, sliderWidth, sliderHeight, sliderSpacing, sliderOffset].contains(view) { continue }
-            if let control = view as? UIControl { control.enabled = enabled }
+            if let control = view as? UIControl { control.isEnabled = enabled }
         }
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func directionAction(sender: AnyObject) {
+    @IBAction func directionAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
         
-        if stackView.direction == .Vertical { stackView.direction = .Horizontal }
-        else { stackView.direction = .Vertical }
+        if stackView.direction == .vertical { stackView.direction = .horizontal }
+        else { stackView.direction = .vertical }
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func wrapAction(sender: AnyObject) {
+    @IBAction func wrapAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
 
-        stackView.shouldWrap = (sender as! UISwitch).on
+        stackView.shouldWrap = (sender as! UISwitch).isOn
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func alignmentAction(sender: AnyObject) {
+    @IBAction func alignmentAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
 
         guard let control = sender as? UISegmentedControl else { return }
         switch control.selectedSegmentIndex {
-        case 0: stackView.alignment = .Origin
-        case 1: stackView.alignment = .Center
-        default: stackView.alignment = .EndPoint
+        case 0: stackView.alignment = .origin
+        case 1: stackView.alignment = .center
+        default: stackView.alignment = .endPoint
         }
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func topInsetAction(sender: AnyObject) {
+    @IBAction func topInsetAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
         stackView.insets.top = CGFloat((sender as! UISlider).value)
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func rightInsetAction(sender: AnyObject) {
+    @IBAction func rightInsetAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
         stackView.insets.right = CGFloat((sender as! UISlider).value)
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func bottomInsetAction(sender: AnyObject) {
+    @IBAction func bottomInsetAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
         stackView.insets.bottom = CGFloat((sender as! UISlider).value)
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func leftInsetAction(sender: AnyObject) {
+    @IBAction func leftInsetAction(_ sender: AnyObject) {
         stackView.frame = DEFAULT_FRAME
         stackView.insets.left = CGFloat((sender as! UISlider).value)
         
         stackView.setNeedsLayout()
     }
     
-    @IBAction func individualAction(sender: AnyObject) {
-        let enabled = (sender as! UISwitch).on
-        controlView.enabled = enabled
-        sliderWidth.enabled = enabled
-        sliderHeight.enabled = enabled
-        sliderSpacing.enabled = enabled && controlView.selectedSegmentIndex != 2
-        sliderOffset.enabled = enabled
+    @IBAction func individualAction(_ sender: AnyObject) {
+        let enabled = (sender as! UISwitch).isOn
+        controlView.isEnabled = enabled
+        sliderWidth.isEnabled = enabled
+        sliderHeight.isEnabled = enabled
+        sliderSpacing.isEnabled = enabled && controlView.selectedSegmentIndex != 2
+        sliderOffset.isEnabled = enabled
         
         stackView.itemSpacing = enabled ? [8.0, 8.0] : nil
         stackView.itemOffset = enabled ? [0.0, 0.0, 0.0] : nil
     }
     
-    @IBAction func viewSelectAction(sender: AnyObject) {
+    @IBAction func viewSelectAction(_ sender: AnyObject) {
         let index = (sender as! UISegmentedControl).selectedSegmentIndex
-        let view = [viewRed, viewYellow, viewBlue][index]
+        let view = [viewRed, viewYellow, viewBlue][index]!
         sliderWidth.value = Float(view.frame.width)
         sliderHeight.value = Float(view.frame.height)
-        sliderSpacing.enabled = switchIndividual.on && controlView.selectedSegmentIndex != 2
+        sliderSpacing.isEnabled = switchIndividual.isOn && controlView.selectedSegmentIndex != 2
         sliderSpacing.value = index != 2 ? Float(stackView.itemSpacing![index]) : sliderSpacing.value
         sliderOffset.value = Float(stackView.itemOffset![index])
     }
     
-    @IBAction func widthAction(sender: AnyObject) {
+    @IBAction func widthAction(_ sender: AnyObject) {
         let index = controlView.selectedSegmentIndex
-        let view = [viewRed, viewYellow, viewBlue][index]
+        let view = [viewRed, viewYellow, viewBlue][index]!
         
         view.frame.size.width = CGFloat((sender as! UISlider).value)
         stackView.setNeedsLayout()
     }
     
-    @IBAction func heightAction(sender: AnyObject) {
+    @IBAction func heightAction(_ sender: AnyObject) {
         let index = controlView.selectedSegmentIndex
         let view = [viewRed, viewYellow, viewBlue][index]
         
-        view.frame.size.height = CGFloat((sender as! UISlider).value)
+        view?.frame.size.height = CGFloat((sender as! UISlider).value)
         stackView.setNeedsLayout()
     }
     
-    @IBAction func spacingAction(sender: AnyObject) {
+    @IBAction func spacingAction(_ sender: AnyObject) {
         let index = controlView.selectedSegmentIndex
         stackView.itemSpacing![index] = CGFloat((sender as! UISlider).value)
         stackView.setNeedsLayout()
     }
     
-    @IBAction func offsetAction(sender: AnyObject) {
+    @IBAction func offsetAction(_ sender: AnyObject) {
         let index = controlView.selectedSegmentIndex
         stackView.itemOffset![index] = CGFloat((sender as! UISlider).value)
         stackView.setNeedsLayout()
