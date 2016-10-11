@@ -115,7 +115,7 @@ open class KRStackView: UIView {
         }
         
         let useItemSpacing = itemSpacing != nil && itemSpacing!.count >= subviews.count - 1
-        let useItemOffset = itemSpacing != nil && itemOffset!.count >= subviews.count
+        let useItemOffset = itemOffset != nil && itemOffset!.count >= subviews.count
         
         for (i, view) in subviews.enumerated() {
             if isVertical {
