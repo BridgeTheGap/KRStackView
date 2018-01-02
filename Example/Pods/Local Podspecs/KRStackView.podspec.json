@@ -1,19 +1,19 @@
 {
   "name": "KRStackView",
-  "version": "0.1.0",
-  "summary": "A short description of KRStackView.",
-  "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/<GITHUB_USERNAME>/KRStackView",
+  "version": "0.4.2",
+  "summary": "KRStackView helps arrange subviews, using only a few parameters.",
+  "description": "KRStackView allows users to arrage subviews like `UIStackView`, but supports iOS 8 and under.",
+  "homepage": "https://github.com/BridgeTheGap/KRStackView",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "Joshua Park": "wmpark@knowre.com"
+    "Josh Woomin Park": "wmpark@knowre.com"
   },
   "source": {
-    "git": "https://github.com/<GITHUB_USERNAME>/KRStackView.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/BridgeTheGap/KRStackView.git",
+    "tag": "0.4.2"
   },
   "platforms": {
     "ios": "8.0"

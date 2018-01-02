@@ -28,25 +28,58 @@ extension CGRect {
 }
 
 open class KRStackView: UIView {
+
     @IBInspectable open var enabled: Bool = true
-    
-    open var direction: StackDirection = .vertical
-    
     @IBInspectable open var translatesCurrentLayout: Bool = false {
         didSet {
             if translatesCurrentLayout { alignment = .origin }
         }
     }
-
-    open var insets: UIEdgeInsets = UIEdgeInsets.zero
-    
+    @IBInspectable open var shouldWrap: Bool = false
     @IBInspectable open var spacing: CGFloat = 8.0
-    open var itemSpacing: [CGFloat]?
+    
+    open var direction: StackDirection = .vertical
     
     open var alignment: ItemAlignment = .origin
+    open var insets: UIEdgeInsets = UIEdgeInsets.zero
+    open var itemSpacing: [CGFloat]?
     open var itemOffset: [CGFloat]?
     
-    @IBInspectable open var shouldWrap: Bool = false
+    private var shouldUseItemSpacing: Bool {
+        return itemSpacing != nil &&
+               itemSpacing!.count >= subviews.count - 1
+    }
+    
+    private var shouldUseItemOffset: Bool {
+        return itemOffset != nil &&
+               itemOffset!.count >= subviews.count
+    }
+    
+    private var knownContentSize: CGFloat {
+        if direction == .vertical {
+            var contentWidth = subviews[0].frame.width + getItemOffset(at: 0)
+            for (i, view) in subviews.enumerated() {
+                if contentWidth < view.frame.width + getItemOffset(at: i) {
+                    contentWidth = view.frame.width + getItemOffset(at: i)
+                }
+            }
+            let maxWidth = insets.left + contentWidth + insets.right
+            
+            return shouldWrap ? maxWidth : max(maxWidth, frame.width)
+        } else {
+            var contentHeight = subviews[0].frame.height + getItemOffset(at: 0)
+            for (i, view) in subviews.enumerated() {
+                if contentHeight < view.frame.height + getItemOffset(at: i) {
+                    contentHeight = view.frame.height + getItemOffset(at: i)
+                }
+            }
+            let maxHeight = insets.top + contentHeight + insets.bottom
+            
+            return shouldWrap ? maxHeight : max(maxHeight, frame.height)
+        }
+    }
+    
+    // MARK: -
     
     public init(frame: CGRect, subviews: [UIView]) {
         super.init(frame: frame)
@@ -74,7 +107,14 @@ open class KRStackView: UIView {
         let isVertical = direction == .vertical
 
         if !translatesAutoresizingMaskIntoConstraints {
-            NSLayoutConstraint.deactivate(constraints + superview!.constraints.filter{ $0.firstItem === self || $0.secondItem === self })
+            let filterFunction: (NSLayoutConstraint) -> Bool = {
+                $0.firstItem === self || $0.secondItem === self
+            }
+            
+            let existingConstraints = constraints +
+                superview!.constraints.filter(filterFunction)
+            
+            NSLayoutConstraint.deactivate(existingConstraints)
             translatesAutoresizingMaskIntoConstraints = true
             
             if translatesCurrentLayout {
@@ -86,82 +126,101 @@ open class KRStackView: UIView {
             translateCurrentStateForSubviews()
         }
         
-        var endX: CGFloat!
-        var endY: CGFloat!
+        var lastX: CGFloat!
+        var lastY: CGFloat!
         
         if isVertical {
-            var maxWidth = subviews[0].frame.width + (itemOffset?[0] ?? 0.0)
-            for (i, view) in subviews.enumerated() {
-                if maxWidth < view.frame.width + (itemOffset?[i] ?? 0.0) {
-                    maxWidth = view.frame.width + (itemOffset?[i] ?? 0.0)
-                }
-            }
-            let maxX = insets.left + maxWidth + insets.right
-            
-            endX = shouldWrap ? maxX : max(maxX, frame.width)
-            endY = 0.0
+            lastX = knownContentSize
+            lastY = 0.0
         } else {
-            endX = 0.0
-            
-            var maxHeight = subviews[0].frame.height + (itemOffset?[0] ?? 0.0)
-            for (i, view) in subviews.enumerated() {
-                if maxHeight < view.frame.height + (itemOffset?[i] ?? 0.0) {
-                    maxHeight = view.frame.height + (itemOffset?[i] ?? 0.0)
-                }
-            }
-            let maxY = insets.top + maxHeight + insets.bottom
-            
-            endY = shouldWrap ? maxY : max(maxY, frame.height)
+            lastX = 0.0
+            lastY = knownContentSize
         }
-        
-        let useItemSpacing = itemSpacing != nil && itemSpacing!.count >= subviews.count - 1
-        let useItemOffset = itemOffset != nil && itemOffset!.count >= subviews.count
         
         for (i, view) in subviews.enumerated() {
             if isVertical {
-                view.frame.origin.y = i == 0 ? insets.top : useItemSpacing ? endY + itemSpacing![i-1] : endY + spacing
-                endY = view.frame.endPoint.y
+                view.frame.origin.y = getOrigin(at: i,
+                                                offset: lastY)
+                lastY = view.frame.endPoint.y
             } else {
-                view.frame.origin.x = i == 0 ? insets.left : useItemSpacing ? endX + itemSpacing![i-1] : endX + spacing
-                endX = view.frame.endPoint.x
+                view.frame.origin.x = getOrigin(at: i,
+                                                offset: lastX)
+                lastX = view.frame.endPoint.x
             }
             
             switch alignment {
+                
             case .origin:
                 if isVertical {
-                    view.frame.origin.x = useItemOffset ? insets.left + itemOffset![i] : insets.left
+                    view.frame.origin.x = shouldUseItemOffset ?
+                        insets.left + itemOffset![i] :
+                        insets.left
                 } else {
-                    view.frame.origin.y = useItemOffset ? insets.top + itemOffset![i] : insets.top
+                    view.frame.origin.y = shouldUseItemOffset ?
+                        insets.top + itemOffset![i] :
+                        insets.top
                 }
+                
             case .center:
                 if isVertical {
-                    view.center.x = useItemOffset ? round(endX/2.0) + itemOffset![i]/2.0 : round(endX/2.0)
+                    view.center.x = shouldUseItemOffset ?
+                        round(lastX*0.5 + itemOffset![i]*0.5) :
+                        round(lastX*0.5)
                 } else {
-                    view.center.y = useItemOffset ? round(endY/2.0) + itemOffset![i]/2.0 : round(endY/2.0)
+                    view.center.y = shouldUseItemOffset ?
+                        round(lastY*0.5 + itemOffset![i]*0.5) :
+                        round(lastY*0.5)
                 }
+                
             case .endPoint:
                 if isVertical {
-                    view.frame.origin.x = endX - (insets.right+view.frame.width)
-                    if useItemOffset { view.frame.origin.x -= itemOffset![i] }
+                    view.frame.origin.x = lastX - (insets.right+view.frame.width)
+                    if shouldUseItemOffset { view.frame.origin.x -= itemOffset![i] }
                 } else {
-                    view.frame.origin.y = endY - (insets.bottom+view.frame.height)
-                    if useItemOffset { view.frame.origin.y -= itemOffset![i] }
+                    view.frame.origin.y = lastY - (insets.bottom+view.frame.height)
+                    if shouldUseItemOffset { view.frame.origin.y -= itemOffset![i] }
                 }
             }
+            
+            adjustViewFrame(view)
         }
         
-        if isVertical {
-            frame.size.width = endX
-            frame.size.height = shouldWrap ? endY + insets.bottom : max(endY + insets.bottom, frame.height)
-        } else {
-            frame.size.width = shouldWrap ? endX + insets.right : max(endX + insets.right, frame.width)
-            frame.size.height = endY
-        }
+        adjustSize(width: lastX,
+                   height: lastY)
         
         defer { translatesCurrentLayout = false }
     }
     
-    fileprivate func translateCurrentStateForSubviews() {
+    // MARK: - Private
+    
+    private func getItemOffset(at index: Int) -> CGFloat {
+        if let itemOffset = itemOffset { return itemOffset[index] }
+        return 0.0
+    }
+    
+    private func getOrigin(at index: Int,
+                           offset: CGFloat) -> CGFloat
+    {
+        if direction == .vertical {
+            if index == 0 {
+                return insets.top
+            } else {
+                return shouldUseItemSpacing ?
+                    offset + itemSpacing![index-1] :
+                    offset + spacing
+            }
+        } else {
+            if index == 0 {
+                return insets.left
+            } else {
+                return shouldUseItemSpacing ?
+                    offset + itemSpacing![index-1] :
+                    offset + spacing
+            }
+        }
+    }
+    
+    private func translateCurrentStateForSubviews() {
         for (i, view) in subviews.enumerated() {
             view.translatesAutoresizingMaskIntoConstraints = true
             
@@ -180,4 +239,37 @@ open class KRStackView: UIView {
             }
         }
     }
+    
+    private func adjustViewFrame(_ view: UIView) {
+        view.frame.origin.x = view.frame.origin.x.rounded(.toNearestOrAwayFromZero)
+        view.frame.origin.y = view.frame.origin.y.rounded(.toNearestOrAwayFromZero)
+        view.frame.size.width = {
+            return view.intrinsicContentSize.width > 0.0 ?
+                ceil(view.frame.size.width) :
+                view.frame.size.width.rounded(.toNearestOrAwayFromZero)
+        }()
+        view.frame.size.height = {
+            return view.intrinsicContentSize.height > 0.0 ?
+                ceil(view.frame.size.height) :
+                view.frame.size.height.rounded(.toNearestOrAwayFromZero)
+        }()
+    }
+    
+    private func adjustSize(width: CGFloat, height: CGFloat) {
+        if direction == .vertical {
+            frame.size.width = width
+            frame.size.height = shouldWrap ?
+                height + insets.bottom :
+                max(height + insets.bottom, frame.height)
+        } else {
+            frame.size.width = shouldWrap ?
+                width + insets.right :
+                max(width + insets.right, frame.width)
+            frame.size.height = height
+        }
+        
+        frame.size.width = round(frame.size.width)
+        frame.size.height = round(frame.size.height)
+    }
+    
 }
