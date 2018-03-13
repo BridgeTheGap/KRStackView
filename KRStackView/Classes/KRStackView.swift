@@ -27,6 +27,7 @@ extension CGRect {
     }
 }
 
+@objcMembers
 open class KRStackView: UIView {
 
     @IBInspectable open var enabled: Bool = true
@@ -196,33 +197,12 @@ open class KRStackView: UIView {
     {
         switch key {
             
-        case "enabled":
-            enabled = value as! Bool
-        
-        case "translatesCurrentLayout":
-            translatesCurrentLayout = value as! Bool
-        
-        case "shouldWrap":
-            shouldWrap = value as! Bool
-        
-        case "spacing":
-            spacing = value as! CGFloat
-        
         case "direction":
             direction = value as! StackDirection
         
         case "alignment":
             alignment = value as! ItemAlignment
         
-        case "insets":
-            insets = value as! UIEdgeInsets
-        
-        case "itemSpacing":
-            itemSpacing = value as? [CGFloat]
-        
-        case "itemOffset":
-            itemOffset = value as? [CGFloat]
-            
         default:
             super.setValue(value,
                            forKey: key)
@@ -233,32 +213,11 @@ open class KRStackView: UIView {
     open override func value(forKey key: String) -> Any? {
         switch key {
             
-        case "enabled":
-            return enabled
-            
-        case "translatesCurrentLayout":
-            return translatesCurrentLayout
-            
-        case "shouldWrap":
-            return shouldWrap
-            
-        case "spacing":
-            return spacing
-            
         case "direction":
             return direction
             
         case "alignment":
             return alignment
-            
-        case "insets":
-            return insets
-            
-        case "itemSpacing":
-            return itemSpacing
-            
-        case "itemOffset":
-            return itemOffset
             
         default:
             return super.value(forKey: key)
