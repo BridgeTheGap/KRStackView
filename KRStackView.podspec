@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KRStackView'
-  s.version          = '0.4.3.2'
+  s.version          = '0.4.3.3'
   s.summary          = 'KRStackView helps arrange subviews, using only a few parameters.'
 
 # This description is used to generate tags and improve search results.
@@ -31,6 +31,8 @@ KRStackView allows users to arrage subviews like `UIStackView`, but supports iOS
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'KRStackView/Classes/**/*'
+  
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
   
   # s.resource_bundles = {
   #   'KRStackView' => ['KRStackView/Assets/*.png']
